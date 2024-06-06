@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://cvyv7jt2j0bsc"]
+
+[ext_resource type="Script" path="res://world.gd" id="1_b6xg6"]
+[ext_resource type="PackedScene" uid="uid://vqfjnukeslyh" path="res://player.tscn" id="1_nosha"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4jhfe"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_oo2p0"]
+sky_material = SubResource("ProceduralSkyMaterial_4jhfe")
+
+[sub_resource type="Environment" id="Environment_jiphg"]
+background_mode = 2
+sky = SubResource("Sky_oo2p0")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_om6ny"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_acrop"]
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_b6xg6")
+player_scene = ExtResource("1_nosha")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jiphg")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(3.62408, 0, 0, 0, 3.62408, 0, 0, 0, 3.62408, 0, -3.8268, 0)
+use_collision = true
+mesh = SubResource("PlaneMesh_om6ny")
+material = SubResource("StandardMaterial3D_acrop")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://player.tscn")
+spawn_path = NodePath("..")
