@@ -17,9 +17,11 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
+@onready var model_arms = $Model/Simon/Skeleton3D/Arms
 @onready var model_head = $Model/Simon/Skeleton3D/Head
 @onready var model_body = $Model
 @onready var colliders = [$ColliderHead, $ColliderLeftArm, $ColliderRightArm, $ColliderLeftLeg, $ColliderRightLeg, $ColliderTorso]
+@onready var animation_player = $Model/AnimationPlayer
 
 var grabbed = true
 
@@ -32,6 +34,7 @@ func _ready():
 	if is_multiplayer_authority():
 		model_head.visible = false
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	animation_player.play("Idle")
 
 func _unhandled_input(event):
 	if is_multiplayer_authority():
@@ -55,8 +58,8 @@ func _process(delta):
 	if is_multiplayer_authority():
 		colliders[Colliders.LEFT_LEG].rotation = $Model/Simon/Skeleton3D/leftpant.rotation
 		colliders[Colliders.RIGHT_LEG].rotation = $Model/Simon/Skeleton3D/rightpant.rotation
-		colliders[Colliders.LEFT_ARM].rotation = $Model/Simon/Skeleton3D/leftsleeve.rotation
-		colliders[Colliders.RIGHT_ARM].rotation = $Model/Simon/Skeleton3D/rightsleeve.rotation
+		colliders[Colliders.LEFT_ARM].rotation = $Model/Simon/Skeleton3D/Arms/leftsleeve.rotation
+		colliders[Colliders.RIGHT_ARM].rotation = $Model/Simon/Skeleton3D/Arms/rightsleeve.rotation
 		colliders[Colliders.TORSO].rotation = $Model/Simon/Skeleton3D/torso.rotation
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -72,8 +75,10 @@ func _physics_process(delta):
 		if direction:
 			velocity.x = direction.x * speed
 			velocity.z = direction.z * speed
+			animation_player.play("Walk")
 		else:
 			velocity.x = move_toward(velocity.x, 0, speed)
 			velocity.z = move_toward(velocity.z, 0, speed)
+			animation_player.play("Idle")
 		
 		move_and_slide()

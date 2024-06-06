@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cvyv7jt2j0bsc"]
+[gd_scene load_steps=9 format=3 uid="uid://cvyv7jt2j0bsc"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_b6xg6"]
 [ext_resource type="PackedScene" uid="uid://vqfjnukeslyh" path="res://player.tscn" id="1_nosha"]
+[ext_resource type="Texture2D" uid="uid://byqgjao3lguen" path="res://grass.jpg" id="3_wiy6m"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4jhfe"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -19,6 +20,9 @@ glow_enabled = true
 [sub_resource type="PlaneMesh" id="PlaneMesh_om6ny"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_acrop"]
+albedo_texture = ExtResource("3_wiy6m")
+uv1_triplanar = true
+uv1_world_triplanar = true
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_b6xg6")
