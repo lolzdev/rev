@@ -39,12 +39,13 @@ func _ready():
 func _unhandled_input(event):
 	if is_multiplayer_authority():
 		if event is InputEventMouseMotion && grabbed:
+			#head.rotate_y(-event.relative.x * sensitivity)
 			self.rotate_y(-event.relative.x * sensitivity)
 			
-			camera.rotate_z(-event.relative.y * sensitivity)
-			camera.rotation.z = clamp(camera.rotation.z, deg_to_rad(-40), deg_to_rad(60))
-			model_head.rotate_z(-event.relative.y * sensitivity)
-			model_head.rotation.z = clamp(model_head.rotation.z, deg_to_rad(-40), deg_to_rad(60))
+			camera.rotate_x(-event.relative.y * sensitivity)
+			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
+			
+			model_head.rotation.z = camera.rotation.x
 			colliders[Colliders.HEAD].rotation = model_head.rotation
 		if event is InputEventKey and event.pressed:
 			if event.keycode == KEY_ESCAPE:
@@ -69,8 +70,8 @@ func _physics_process(delta):
 			velocity.y -= gravity * delta
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			velocity.y = jump_force
-		var input_dir = Input.get_vector("left", "right", "forward", "back")
-		var direction = (camera.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		var input_dir = Input.get_vector("back", "forward", "left", "right")
+		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		
 		if direction:
 			velocity.x = direction.x * speed
